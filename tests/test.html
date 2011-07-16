@@ -1,0 +1,70 @@
+<html>
+<head>
+	<meta name="http-equiv" content="Content-type: text/html; charset=UTF-8"/>
+	<link rel="stylesheet" type="text/css" href="../src/css/mathete.css" />
+	<script language="javascript" type="text/javascript" src="../src/js/mathete.js"></script>
+
+	<script src="http://code.jquery.com/jquery-latest.js"></script>
+	<link rel="stylesheet" href="http://code.jquery.com/qunit/git/qunit.css" type="text/css" media="screen" />
+	<script type="text/javascript" src="http://code.jquery.com/qunit/git/qunit.js"></script>
+
+	<link rel="stylesheet" href="../static_dev/css/qunit.css" type="text/css" media="screen" />
+	<script type="text/javascript" src="../static_dev/js/qunit.js"></script>
+	<script charset="utf-8" type="text/javascript" src="test_base.js"></script>
+	<script charset="utf-8" type="text/javascript" src="test_elem_func.js"></script>
+	<script charset="utf-8" type="text/javascript" src="test_symbol.js"></script>
+	<script charset="utf-8" type="text/javascript" src="test_matrix.js"></script>
+
+<script charset="utf-8">
+	$().ready(function (){
+		$M.Env.setUp();
+		$('button').click(function(){
+			$('#result').html('');
+			var pr = $('#inp').val();
+			var art = new $M.Article('result', [pr], 3);
+			art.getHtml();
+			art.calc();
+		});
+		var cache_ = '';
+/*
+		$('#inp').keyup(function(){
+			return;
+			var val = $(this).val();
+			if (val == cache_) return;
+			cache_ = val;
+			try {
+			   var pr = new $M.Prs().parse(val);
+			} catch (err){
+			   return
+			}
+			if (!$M.getActiveArticle()){
+				var ghh = $M.addSubarticle(new $M.Article_('adsfhjk', [pr], 3));
+			} else {
+				ghh = $M.getActiveArticle();
+				ghh.paragrafs = [pr];
+			}
+			ghh.getHtml();
+			ghh.getResult();
+		});
+*/
+	});
+</script>
+
+</head>
+
+<body>
+	<div id="some" style="border:1px solid #999;">
+		<textarea type="text" id="inp" rows="5" cols="40" style="font-size:16px;font-family:times,serif;"></textarea>
+		<button type="button">PARSE</button>
+	</div>
+	<div id="result"></div>
+
+	<h1 id="qunit-header">QUnit for Mathete</h1>
+	<h2 id="qunit-banner"></h2>
+	<div id="qunit-testrunner-toolbar"></div>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+	<div id="qunit-fixture">test markup, will be hidden</div>
+
+</body>
+</html>

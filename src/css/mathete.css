@@ -1,0 +1,244 @@
+
+.MatheteParagraph, .MatheteOutput, .MathInput, .mathOutput, .MathResult, .mInput, .cInput{
+    text-align: center;
+}
+
+.mInput{
+    margin-bottom: 3px;
+}
+
+.MathetePar {
+    font-family: Times, Times New Roman, serif;
+    font-size: 15px;
+    padding:0;
+    margin:0;
+    /*
+    display:inline-block; 
+    *display:inline;
+    */
+}
+
+.MathetePar .MathError { 
+    color: #e22;
+}
+
+.MathetePar span, .MathetePar .PlotPar, .MathetePar .Fake {
+    font-family: Times, Times New Roman, serif;
+    font-weight: normal;
+    vertical-align:top;
+    padding:0;
+    margin:0;
+    border:0;
+    display:-moz-inline-stack; /* for FF2*/
+    display:inline-block; /*normal browsers */
+    *display:inline; /* for IE */
+}
+
+.MathetePar table {
+    border-collapse:collapse;
+    border-spacing:0;
+}
+
+.MathetePar span.Nom, .MathetePar span.Denom, .MathetePar span.TopSum, .MathetePar span.BottomSum, .MathetePar span.BaseSum, .MathetePar span.SwitchEl {
+    display: block;
+}
+
+.MathetePar .Delmiter{
+    margin: 0px 5px 0px 2px;
+    zoom:1;
+}
+
+.MathetePar .Brack{
+    padding: 0px 0.07em;
+}
+
+.MathetePar .Fake, .MathetePar .Integer, .MathetePar .Number, .MathetePar .Ass, .MathetePar .Add, .MathetePar .Mul, .MathetePar .Pow, .MathetePar .Root, .MathetePar .Input, .MathetePar .Brack, .MathetePar .Logarithm, .MathetePar .Log, .MathetePar .SymbLog, .MathetePar .ExpLog, .MathetePar .Func, .MathetePar .FuncName, .MathetePar .ExpRoot, .MathetePar .PlotPar, .MathetePar .MathError, .MathetePar .OpSum, .MathetePar .Bool, .MathetePar .SumDiff, .MathetePar .OperEquiv, .MathetePar .Diff, .MathetePar .Fact, .MathetePar .OperFact, .MathetePar .Abs, .MathetePar .SwitchBase, .MathetePar .Switch{
+   zoom:1;
+}
+
+.MathetePar .SwitchBase{
+    text-align:left;
+
+}
+
+.MathetePar .FuncName{
+    padding-right: 0.143em;
+}
+
+.MathetePar .Bool{
+    font-weight: bold;
+    color: #479;
+}
+
+.MathetePar .Input input{
+    font-size: 0.9em;
+    padding: 0.143em;
+    margin: 0.143em;
+}
+
+.MathetePar .Oper{
+    margin: 0px 0.25em 0px 0.25em;
+    zoom: 1;
+}
+
+.MathetePar .OperEquiv{
+    font-weight: bolder;
+    font-size: 1.02em;
+    margin: 0px 0.25em 0px 0.25em;
+}
+
+.MathetePar .OperR{
+
+}
+
+.MathetePar .OperMul {
+    margin: 0px 2px;
+    zoom: 1;
+}
+
+.MathetePar .OperRoot{
+   zoom: 1;
+   margin-right: -0.04em;
+   margin-top: -0.0em;
+   font-size: 1.1em;
+}
+
+
+.MathetePar .BaseRoot{
+    zoom: 1;
+    border-top: 0.143em solid;
+    padding-left: 0.15em;
+    padding-right: 0.15em;
+}
+
+.MathetePar .ExpRoot{
+    zoom: 1;
+    font-size: 0.66em;
+    margin-left: 0.2em;
+    margin-top: -0.143em;
+}
+
+.MathetePar .Symbol{ 
+    font-style: italic;
+    zoom: 1;
+}
+
+.MathetePar .SymbolStrong{ 
+    font-weight: bold;
+    zoom: 1;
+}
+
+.MathetePar .sub, .MathetePar .ArrayIndex{
+    zoom:1;
+    font-size: 0.7em;
+    margin: 0px 0.1em 0em 0.1em;
+    position: relative;
+    top: 0.7em;
+}
+
+.MathetePar .ArrayIndex{
+    font-weight: bold;
+}
+
+
+.MathetePar .Pow {
+    zoom:1;
+}
+
+.MathetePar .BasePow{
+    zoom:1;
+}
+
+.MathetePar .ExpPow{
+    font-size: 0.66em;
+    zoom:1;
+}
+
+.MathetePar .Div, .MathetePar .Sum{
+    clear:both;
+    text-align: center;
+    zoom:1;
+}
+
+.MathetePar .TopSum, .MathetePar .BottomSum{
+    text-align: center;
+    font-size: 0.6em;
+    //padding-left: 1em;
+}
+
+
+.MathetePar .Nom{
+    border-bottom: 0.143em solid;
+    padding: 0px 0.2em 0.1em 0.2em;
+}
+
+.MathetePar .Denom{
+    padding: 0px 0.2em 0px 0.2em;
+}
+
+.MathetePar .Array, .MathetePar .Matrix {
+    zoom:1;
+}
+
+.MathetePar .ArrayBase{
+    zoom: 1;
+    overflow: auto;
+    max-width: 200px;
+    width: expression(Math.min(parseInt(this.offsetWidth), 200 ) + "px"); 
+    padding-bottom: 3px;
+}
+
+
+.MathetePar .MatrixBase{
+    zoom: 1;
+    overflow: auto;
+    max-width: 200px;
+    max-height: 200px;
+    height: expression(this.scrollHeight > 201?"200px":"auto");
+    width: expression(Math.min(parseInt(this.offsetWidth), 200 ) + "px"); 
+    padding: 0px 7px 3px 7px;
+}
+
+
+.MathetePar .ArrayBase table tr td{
+    vertical-align: top;
+    white-space: nowrap;
+    text-align: center;
+    border: 0;
+}
+
+.MathetePar .MatrixBase table tr td{
+    vertical-align: top;
+    white-space: nowrap;
+    text-align: center;
+    border: 0;
+    padding: 3px;
+}
+
+.MathetePar .Matrix table tr td.maBrRi{
+    border-right: 2px solid #000;
+    border-top: 2px solid #000;
+    border-bottom: 2px solid #000;
+    width: 4px;
+}
+
+.MathetePar .Matrix table tr td.maBrLe{
+    border-left: 2px solid #000;
+    border-top: 2px solid #000;
+    border-bottom: 2px solid #000;
+    width: 4px;
+}
+
+.MathetePar .ExpLog{
+    font-size: 0.66em;
+}
+
+.MathetePar .Plot{
+    border: 1px solid #ad9;
+}
+
+.MathetePar .PlotText{
+    position:absolute;
+    font-size: 10px;
+    color: #555;
+}
