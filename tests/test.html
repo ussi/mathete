@@ -10,8 +10,8 @@
 
 	<script charset="utf-8" type="text/javascript" src="test_base.js"></script>
 	<script charset="utf-8" type="text/javascript" src="test_elem_func.js"></script>
-	<script charset="utf-8" type="text/javascript" src="test_symbol.js"></script>
 	<script charset="utf-8" type="text/javascript" src="test_matrix.js"></script>
+	<script charset="utf-8" type="text/javascript" src="test_symbol.js"></script>
 
 <script charset="utf-8">
 	$().ready(function (){
@@ -20,8 +20,8 @@
 			$('#result').html('');
 			var pr = $('#inp').val();
 			var art = new $M.Article('result', [pr], 3);
-			art.getHtml();
-			art.calc();
+			art.fill();
+			art.calc(true);
 		});
 		var cache_ = '';
 /*
@@ -52,7 +52,7 @@
 
 <body>
 	<div id="some" style="border:1px solid #999;">
-		<textarea type="text" id="inp" rows="5" cols="40" style="font-size:16px;font-family:times,serif;"></textarea>
+		<textarea type="text" id="inp" rows="5" cols="120" style="font-size:16px;font-family:times,serif;"></textarea>
 		<button type="button">PARSE</button>
 	</div>
 	<div id="result"></div>
