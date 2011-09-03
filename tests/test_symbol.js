@@ -3,7 +3,6 @@ $(document).ready(function(){
 	$M.Env.setUp();
 
 	var art = new $M.Article();
-
 	module("Symbols Test");
 	test("x test", function(){
 		var pr = $M.parse('x');
@@ -63,7 +62,9 @@ $(document).ready(function(){
 		equals('-x', pr+'', 'Expected equals');
 	});
 
+
 	module("Association Test");
+
 
 	test("x=67 test", function(){
 		var art = new $M.Article('math_', ['x=67'], 3);

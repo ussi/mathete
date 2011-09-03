@@ -3,6 +3,7 @@ $(document).ready(function(){
 	$M.Env.setUp();
 
 	var art = new $M.Article();
+	$M.activeArticle = art;
 
 	module("Elementary Functions Test");
 	test("sin(1) test", function(){

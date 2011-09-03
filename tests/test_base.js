@@ -1,9 +1,9 @@
 $(document).ready(function(){
 
 	$M.Env.setUp();
-//return;
 
 	var art = new $M.Article();
+	$M.activeArticle = art;
 
 	module("Basic Number Test");
 	test("simple number 12 test", function(){
@@ -26,7 +26,6 @@ $(document).ready(function(){
 		expect(3);
 		ok(pr.isAdd, 'it`s additional');
 		equals('1 + 2', pr+'', 'Expected equals');
-		//equals('1+2', pr.getHtml().textContent, 'Expected equals');
 		equals(3, pr.getResult(art.ns), 'Expected equals');
 	});
 
@@ -35,7 +34,6 @@ $(document).ready(function(){
 		expect(3);
 		ok(pr.isAdd, 'it`s additional');
 		equals('1 + 2 + 3', pr+'', 'Expected equals');
-		//equals('1+2+3', pr.getHtml().textContent, 'Expected equals');
 		equals(6, pr.getResult(art.ns), 'Expected equals');
 	});
 
@@ -152,14 +150,14 @@ $(document).ready(function(){
 		expect(3);
 		ok(pr.isDiv, 'it`s division');
 		equals('((12 / 3) / 2) / 0.45', pr + '', 'Expected equals');
-		equals(4.4444444, pr.getResult(art.ns), 'Expected equals');
+		equals(pr.getResult(art.ns).toFixed(7), '4.4444444', 'Expected equals');
 	});
 
 	test("zero division test", function(){
 		var pr = $M.parse(' 3.5/ 0');
 		expect(3);
 		ok(pr.isDiv, 'it`s division');
-		equals('3.5 / 0', pr + '', 'Expected equals');
+		equals( pr + '', '3.5 / 0', 'Expected equals');
 		ok(pr.getResult(art.ns) >= Number.POSITIVE_INFINITY, 'result is Infinity');
 	});
 
