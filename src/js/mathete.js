@@ -442,11 +442,15 @@ $M.Env.tearDown = function(){
 
 $M.Parser = new Object();
 
-$M.Parser.operators = new function(){};
+$M.Parser.operators = new Object();//new function(){};
 
-$M.Parser.operators.constructor.prototype.add = function(options){
-	if (typeof this[options.symbol] !== 'undefined')
-		return;
+$M.Parser.operators.add = function(options){
+	var existOp = this[options.symbol];
+	if (typeof existOp !== 'undefined') {
+		for (prop in options)
+			existOp[prop] = options[prop];
+		return existOp;
+	};
 	var constr = function(){this.isOperator = true;};
 	constr.prototype.toString = function(){return this.symbol};
 	constr.prototype.symbol = options['symbol'];
@@ -2972,6 +2976,7 @@ $M.func.add('plot3d', {
 					ns.add(x, x_);
 					var nY = y.getResult(ns);
 					if (typeof yIsSymb == 'undefined'){
+
 						yIsSymb = !!nY.isSym;
 						var yName = y;
 					};
