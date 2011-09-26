@@ -19,30 +19,18 @@ var $MClass = function () {
 	this.articles = [];
 	this.activeArticle = undefined;
 	this.limitFloor = 1e-15;
-
-	// getters
-	this.getVersion = function(){return version;};
-	this.getRecurDeep = function(){return RECUR_DEEP;};
-	this.getArticles = function(){return this.articles;};
-	this.getActiveArticle = function(){return this.activeArticle;};
-	this.getLimitFloor = function(){return this.limitFloor;};
-
-	// setters
-	this.setArticles = function(articles){this.articles=articles;};
-	this.setActiveArticle = function(article){this.activeArticle=article;};
 };
 
-var $M = window.$M = new $MClass(); 
+var $M = window.$M = new $MClass();
 
 /**********************************************************************/
-/*****   U  T  I  L  S			*******/
+/*****		U  T  I  L  S			*******/
 /**********************************************************************/
-
 
 $M.Utils = new Object();
 
 // Margin coefficient calculation
-$M.Utils.setMargin = function(){
+$M.Utils.setMargin = function() {
 	var cont = document.createElement("span");
 	cont.className = "MathetePar";
 
@@ -104,7 +92,7 @@ $M.Utils.getElementByClass = function(node, classList) {
 };
 
 /***********************************************************************/
-/****  E n v i r o m e n t		***/
+/****		E n v i r o m e n t		***/
 /***********************************************************************/
 $M.Env = new Object();
 
@@ -127,7 +115,7 @@ $M.Env.SetUpNumber = function(){
 		};
 		var roun = $M.activeArticle.getMode('float') || $M.DEFAULT_FLOAT_MODE;
 		var res = this.toFixed(roun) / 1;
-		return (Math.abs(res) < $M.getLimitFloor()) ? 0 : res;
+		return (Math.abs(res) < $M.limitFloor) ? 0 : res;
 	};
 
 	Number.prototype.getHtml = function (alone) {
@@ -150,9 +138,8 @@ $M.Env.SetUpNumber = function(){
 			return $M.func.get('mul', [base, $M.func.get('pow', [10, mantis])]).getHtml();
 		};
 		var rounRes = res.toFixed(roun);
-		if (rounRes * 1 != res) {
+		if (rounRes * 1 != res)
 			res = rounRes;
-		};
 		return $M.Html.block('' + res, "Number");
 	};
 };
@@ -174,7 +161,7 @@ $M.Env.SetUpString = function() {
 
 	String.prototype.getHtml = function() {
 		var name = this;
-		if (this.charAt(0) == '_'){
+		if (this.charAt(0) == '_') {
 			name = this.substring(1);
 			this.strong = true;
 		};
@@ -437,7 +424,7 @@ $M.Env.tearDown = function(){
 };
 
 /***********************************************************************/
-/********			P A R S E R	*****************/
+/********	P A R S E R		*****************/
 /***********************************************************************/
 
 $M.Parser = new Object();
@@ -517,27 +504,27 @@ $M.Parser.operators.add({symbol:'-', weight:40, preWeight:25,
 });
 
 $M.Parser.operators.add({symbol:'*', weight:30,
-	infix:function(a){ return $M.Parser.infixArgs(a, 'mul', 'isMul') }
+	infix: function(a){ return $M.Parser.infixArgs(a, 'mul', 'isMul') }
 });
 
 $M.Parser.operators.add({symbol:'/', weight:30,
-	infix:function(a){return $M.Parser.infixArgs(a, 'div')}
+	infix: function(a){return $M.Parser.infixArgs(a, 'div')}
 });
 
 $M.Parser.operators.add({symbol:'^', weight:20, 'association':'right',
-	infix:function(a){return $M.Parser.infixArgs(a, 'pow')}
+	infix: function(a){return $M.Parser.infixArgs(a, 'pow')}
 });
 
 $M.Parser.operators.add({symbol:'\\', weight:10, 'association':'right',
-	infix:function(a){return $M.Parser.infixArgs(a, 'root')},
-	prefix:function(a){
+	infix: function(a){return $M.Parser.infixArgs(a, 'root')},
+	prefix: function(a){
 		a[a.length - 1] = $M.func.get('root', [2, a[a.length - 1]]);
 		return a;
 	}
 });
 
 $M.Parser.operators.add({symbol:'!', weight:10,
-	postfix:function(a){
+	postfix: function(a){
 		a[a.length - 1] = $M.func.get('factorial', [a[a.length - 1]]);
 		return a;
 	}
@@ -548,27 +535,27 @@ $M.Parser.operators.add({symbol:'=', weight:200,
 });
 
 $M.Parser.operators.add({symbol:'==', weight:80,
-	infix:function(a){ return $M.Parser.infixArgs(a, 'eq') }
+	infix: function(a){ return $M.Parser.infixArgs(a, 'eq') }
 });
 
 $M.Parser.operators.add({symbol:'/=', weight:80,
-	infix:function(a){ return $M.Parser.infixArgs(a, 'ne') }
+	infix: function(a){ return $M.Parser.infixArgs(a, 'ne') }
 });
 
 $M.Parser.operators.add({symbol:'>', weight:80,
-	infix:function(a){ return $M.Parser.infixArgs(a, 'gt') }
+	infix: function(a){ return $M.Parser.infixArgs(a, 'gt') }
 });
 
 $M.Parser.operators.add({symbol:'<', weight:80,
-	infix:function(a){ return $M.Parser.infixArgs(a, 'lt') }
+	infix: function(a){ return $M.Parser.infixArgs(a, 'lt') }
 });
 
 $M.Parser.operators.add({symbol:'>=', weight:80,
-	infix:function(a){ return $M.Parser.infixArgs(a, 'ge') }
+	infix: function(a){ return $M.Parser.infixArgs(a, 'ge') }
 });
 
 $M.Parser.operators.add({symbol:'<=', weight:80,
-	infix:function(a){ return $M.Parser.infixArgs(a, 'le') }
+	infix: function(a){ return $M.Parser.infixArgs(a, 'le') }
 });
 
 $M.Parser.operators.add({symbol:'(', weight:300,
@@ -698,7 +685,12 @@ $M.Parser.Parser.prototype.aggr = function(stack){
 			if (preEl && (!preEl.isOperator || preEl.method == 'pos'))
 				throw $M.Utils.error('Syntax Error `' + preEl + ' ' + el + '`');
 			num = Number(el);
-			stackArgs.push(isNaN(num)? el: num);
+			if (isNaN(num)) {
+				if (el == 'true' || el == 'false')
+					el = $M.func.get(el);
+				stackArgs.push(el);
+			} else
+				stackArgs.push(num);
 			continue;
 		};
 		if (preEl && preEl.isOperator) {
@@ -826,9 +818,9 @@ $M.parseMulti = function(str){
 	return list;
 };
 
-/************************************************************************/
-/*****   H T M L		 ************/
-/************************************************************************/
+/***********************************************************************/
+/*****		H T M L		 ************/
+/***********************************************************************/
 
 $M.Html = new Object();
 
@@ -899,6 +891,7 @@ $M.Html._bracket = function(symb){
 $M.Html.brOpen = function (symb) {
 	return $M.Html._bracket(symb || '(');
 };
+
 $M.Html.brClose = function (symb) {
 	return $M.Html._bracket(symb || ')');
 };
@@ -930,9 +923,9 @@ $M.Html.margin = function (elements) {
 	return [elements, maxMargin, maxHeight];
 };
 
-/*************************************************************************/
+/***********************************************************************/
 /*
-/*************************************************************************/
+/***********************************************************************/
  
 
 $M.NameSpace = function (nss) {
@@ -966,8 +959,8 @@ $M.NameSpace = function (nss) {
 };
 
 
-/*************************************************************************/
-/*************************************************************************/
+/***********************************************************************/
+/***********************************************************************/
 
 $M.Rational = function(nom, denom){
 	this.isRational = true;
@@ -1021,9 +1014,6 @@ $M.Rational.prototype._normal = function(){
 	};
 };
 
-/*************************************************************************/
-/*************************************************************************/
-
 $M.calcArticle = function (_id) {
 	var a = $M.articles[_id];
 	if (a)
@@ -1031,18 +1021,18 @@ $M.calcArticle = function (_id) {
 	return false;
 };
 
-/*************************************************************************/
-/************  A R T I C L E  &  P A R A G R A P H	************/
-/*************************************************************************/
+/***********************************************************************/
+/********	A R T I C L E  &  P A R A G R A P H		************/
+/***********************************************************************/
 
 $M.Article = function (mid, paragraphs) {
 	this.init(mid, paragraphs);
 };
 
-$M.Article.prototype.init = function(mid, paragraphs){
+$M.Article.prototype.init = function(mid, paragraphs) {
 	$M.Env.setUp();
-	this.modes = {'float':7, rational:false, calc:true,
-				hideIn:false, hide:false, hideOut:false};
+	this.modes = {'float': 7, rational: false, calc: true,
+				hideIn: false, hide: false, hideOut: false};
 
 	this.id = $M.articles.length;
 	var element;
@@ -1050,50 +1040,48 @@ $M.Article.prototype.init = function(mid, paragraphs){
 	if (mid) {
 		if (typeof mid === 'string')
 			element = document.getElementById(mid);
-		else {
-			if (mid.nodeType)
-				element = mid;
-			else
-				element = null;
-		};
+		else
+			element = mid.nodeType ? mid : null;
 	};
 	this.element = element;
 	// paragraphs
-	var _pars = paragraphs || new Array();
 	this.paragraphs = new Array();
-	var el, lastEl;
+	var _pars = paragraphs || new Array();
 
-	for (var i = 0, l = _pars.length; i < l; i++){
-		el = _pars[i];
-		if (el.isPar) {
-			this.paragraphs.push(el);
-			continue;
-		};
-		if ((typeof el == 'object') && el.length && el.length > 0) {
-			_pars.splice(i, 1);
-			for (var j = 0, k = el.length; j < k; _pars.splice(i + j, 0, el[j++]))
-				l += el.length - 1;
-			i--;
-			continue;
-		};
-		var _str = (typeof el === 'string') ? el :
-					(el.nodeType ? el.innerHTML : undefined);
-		if (!_str)
-			continue;
-		var pars = $M.parseMulti(_str), pr;
-		for (var j = 0, k = pars.length; j < k; j++) {
-			pr = pars[j];
-			if (j == 0 && el.nodeType)
-				pr.DOMEl = el;
-			this.paragraphs.push(pr);
-		};
-	};
+	for (var i = 0, l = _pars.length; i < l; i++)
+		this.addParagraph(_pars[i]);
+
 	//$M.Utils.setMargin();
 	this.ns = new $M.NameSpace();
 	this.inputCount = 0;
 	this.inputSpace = {};
 	$M.articles.push(this);
 	$M.Env.tearDown();
+};
+
+$M.Article.prototype.addParagraph = function(par) {
+	var ids = [];
+
+	if (par.isPar)
+		return this.paragraphs.push(el) - 1;
+
+	if ((typeof par == 'object') && par.length && par.length > 0) {
+		for (var i = 0, l = par.length; i < l; i++)
+			ids.push(this.addParagraph(par[i]));
+		return ids;
+	};
+	var _str = (typeof par === 'string') ? par :
+				(par.nodeType ? par.innerHTML : undefined);
+	if (!_str)
+		return;
+	var pars = $M.parseMulti(_str), pr;
+	for (var j = 0, k = pars.length; j < k; j++) {
+		pr = pars[j];
+		if (j == 0 && par.nodeType)
+			pr.DOMEl = par;
+		ids.push(this.paragraphs.push(pr));
+	};
+	return ids;
 };
 
 $M.Article.prototype.getMode = function(key){
@@ -1106,51 +1094,49 @@ $M.Article.prototype.setMode = function(key, value) {
 		this.modes['rational'] = false;
 };
 
+$M.Article.prototype.fillParagraph = function(id, lastEl) {
+	if ((typeof id == 'object') && par.length && par.length > 0) {
+		for (var i = 0, l = id.length; i < l; i++)
+			ids.push(this.fillParagraph(id[i]));
+	};
+	var par = this.paragraphs[id];
+	if (!par)
+		return;
+	// TODO: check current display mode (may be paragraph is hidden)
+	_html = par.getHtml();
+	if (!_html)
+		return;
+	if (!par.DOMEl) {
+		dv = document.createElement('div');
+		if (lastEl){
+			// insert after last element
+			lastEl.parentNode.insertBefore(dv, lastEl.nextSibling);
+		} else {
+			// just append to article
+			this.element.appendChild(dv);
+		};
+		par.DOMEl = dv;
+	};
+	par.DOMEl.innerHTML = '';
+	par.DOMEl.appendChild(_html);
+	lastEl = par.DOMEl;
+};
+
 $M.Article.prototype.fill = $M.Article.prototype.getHtml = function () {
 	$M.Env.setUp();
 	this.inputCount = 0;
-	$M.setActiveArticle(this);
+	$M.activeArticle = this;
 	var el, lastEl, dv, _html;
 
-	for (var i = 0, l = this.paragraphs.length; i < l; i++) {
-		var par = this.paragraphs[i];
-		if (!par)
-			continue;
-		// TODO: check current display mode (may be paragraph is hidden)
-		_html = par.getHtml();
-		if (!_html)
-			continue;
-		if (!par.DOMEl) {
-			dv = document.createElement('div');
-			if (lastEl) {
-				// insert after last element
-				lastEl.parentNode.insertBefore(dv, lastEl.nextSibling);
-			} else {
-				// just append to article
-				this.element.appendChild(dv);
-			};
-			par.DOMEl = dv;
-		};
-		par.DOMEl.innerHTML = '';
-		par.DOMEl.appendChild(_html);
-		lastEl = par.DOMEl;
-	};
+	for (var i = 0, l = this.paragraphs.length; i < l; i++)
+		lastEl = this.fillParagraph(i, lastEl)
 
-	var calc = document.location.href.split('#/c/')[1];
-	if (calc) {
-		var inps = calc.split('&');
-		for (i = 0, l = inps.length; i < l; i++) {
-			var inp = inps[i].split('=');
-			document.getElementById(inp[0]).val(inp[1]);
-		};
-	};
 	if (this.hasInputs) {
 		var but = document.createElement('button');
 		but.className = 'MatheteButton';
 		but.innerHTML = 'Recalculate';
 		but.onclick = function(i){
 			return function() {
-					//this.style.cursor = 'wait';
 					$M.calcArticle( i );
 					return false;
 				};
@@ -1158,13 +1144,13 @@ $M.Article.prototype.fill = $M.Article.prototype.getHtml = function () {
 		this.element.appendChild(but);
 	};
 
-	$M.setActiveArticle(undefined);
+	$M.activeArticle = undefined;
 	$M.Env.tearDown();
 };
 
 $M.Article.prototype._calc = function () {
 	$M.Env.setUp();
-	$M.setActiveArticle(this);
+	$M.activeArticle = this;
 	// reset namespace
 	this.ns.reset();
 	var el, str, res, newOut;
@@ -1178,13 +1164,13 @@ $M.Article.prototype._calc = function () {
 			var out = $M.Utils.getElementByClass(el.DOMEl, 'MatheteOut');
 			if (out && out.length)
 				el.DOMEl.removeChild(out[0]);
-			newOut = res.getHtml();
+			newOut = res.getHtml(true);
 			newOut.className = "MathetePar MatheteOut";
 			el.DOMEl.appendChild(newOut);
 		};
 	};
 	$M.Env.tearDown();
-	$M.setActiveArticle(undefined);
+	$M.activeArticle = undefined;
 	window.document.body.style.cursor = '';
 	return;
 };
@@ -1228,12 +1214,22 @@ $M.Paragraph = function (subpars) {
 	};
 };
 
-$M.Paragraph.prototype.getHtml = function () {
+$M.Paragraph.prototype.getHtml = function (result) {
 	var elements = [], delm, el;
-	if (this.isPlotPar)
+	if (this.isPlotPar) {
+		if ($M.activeArticle.getMode('hide'))
+			return
 		return $M.Html.block(this.plot.getHtml(), "MathetePar", "div");
+	};
 	for (var i = 0, l = this.subpars.length; i < l; i++) {
-		if (this.subpars[i].isMode)
+		if (this.subpars[i].isMode) {
+			el = this.subpars[i];
+			if (el.nameMode == 'hide' || (el.nameMode == 'hideIn' && !result) || el.nameMode == 'hideOut' && result) {
+				el.getResult($M.activeArticle.ns);
+			};
+			continue;
+		};
+		if ($M.activeArticle.getMode('hide') || $M.activeArticle.getMode('hideIn') && !result || $M.activeArticle.getMode('hideOut') && result)
 			continue;
 		try {
 			el = this.subpars[i].getHtml(true);
@@ -1257,7 +1253,9 @@ $M.Paragraph.prototype.getResult = function (ns) {
 	}
 	var res, el;
 	var subpars = [];
-	for (var i = 0, l = this.subpars.length; i < l; i++){
+	for (var i = 0, l = this.subpars.length; i < l; i++) {
+		if (this.subpars[i].isMode && this.subpars[i].nameMode == 'hideIn')
+			continue;
 		try {
 			el = this.subpars[i].getResult(ns);
 		} catch (er) {
@@ -1400,7 +1398,7 @@ $M.func.add = function(name, options){
 /* Modes */
 
 (function() {
-	var modeNames = ['float', 'rational', 'calc', 'hideIn', 'hide', 'hideOut'],
+	var modeNames = ['float', 'rational', 'calc', 'hideIn', 'hide',  'hideOut'],
 		nameMode;
 	for (var i = 0, l = modeNames.length; i < l; i++) {
 		nameMode = modeNames[i];
@@ -1418,9 +1416,9 @@ $M.func.add = function(name, options){
 })();
 
 
-/**************************************************************************/
-/************************* I N P U T  *************************************/
-/**************************************************************************/
+/****************************************************************************/
+/************************* I N P U T  ***************************************/
+/****************************************************************************/
 $M.func.add('input', {
 	isInput: true,
 
