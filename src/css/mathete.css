@@ -47,6 +47,7 @@ div.MathetePar div, div.MathetePar span {
 	padding:0;
 	margin:0;
 	border:0;
+	line-height:normal;
 }
 
 div.MathetePar span, div.MathetePar div.PlotPar, div.MathetePar div.Fake {
@@ -218,6 +219,18 @@ div.MathetePar span, div.MathetePar div.PlotPar, div.MathetePar div.Fake {
 	height: expression(this.scrollHeight > 201?"200px":"auto");
 	width: expression(Math.min(parseInt(this.offsetWidth), 200 ) + "px"); 
 	padding: 0px 7px 3px 7px;
+}
+
+.MathetePar span table {
+	border: 0;
+	padding: 0;
+	margin: 0;
+}
+
+.MathetePar span table td {
+	border: 0;
+	padding: 0;
+	margin: 0;
 }
 
 

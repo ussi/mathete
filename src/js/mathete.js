@@ -72,6 +72,10 @@ $M.Utils.equal = function (a, b) {
 };
 
 $M.Utils.getElementByClass = function(node, classList) {
+	if (arguments.length == 1) {
+		classList = node;
+		node = window.document;
+	};
 	if (document.getElementsByClassName)
 		return (node || document).getElementsByClassName(classList);
 	node = node || document;
@@ -1231,16 +1235,16 @@ $M.Paragraph.prototype.getHtml = function (result) {
 		};
 		if ($M.activeArticle.getMode('hide') || $M.activeArticle.getMode('hideIn') && !result || $M.activeArticle.getMode('hideOut') && result)
 			continue;
+		if (elements.length) {
+			delm = $M.Html.block(document.createTextNode(";"), "Delmiter");
+			elements[elements.length] = delm;
+		};
 		try {
 			el = this.subpars[i].getHtml(true);
 		} catch (er) {
 			el = $M.Utils._err2obj(er).getHtml(true);
 		};
 		elements[elements.length] = el;
-		if (i < l - 1) {
-			delm = $M.Html.block(document.createTextNode(";"), "Delmiter");
-			elements[elements.length] = delm;
-		};
 	};
 	var res = $M.Html.block(elements, "MathetePar", "div");
 	return res;
@@ -1434,14 +1438,17 @@ $M.func.add('input', {
 			dv.setAttribute("type", "text");
 			dv.setAttribute("id", this.id);
 			dv.setAttribute("name", this.id);
-			dv.style.width = (('' + val).length / 2 + 1 + "em");
+			dv.style.width = ('' + val).length / 2 + 1 + "em";
 			dv.setAttribute("value", val);
 		} else {
 			var dv = document.createElement("select");
 			dv.setAttribute("id", this.id);
 			dv.setAttribute("name", this.id);
+			var maxLength = 0;
 			for (var i = 0, l = this.args.length; i < l; i++) {
-				var v = this.args[i];
+				var v = this.args[i],
+				len = ('' + v).length;
+				maxLength = maxLength < len ? len : maxLength; 
 				var op = document.createElement("option");
 				if ($M.Utils.equal(v, val)) {
 					op.setAttribute("selected", "");
@@ -1449,7 +1456,8 @@ $M.func.add('input', {
 				op.setAttribute("value", v);
 				op.innerHTML = v;
 				dv.appendChild(op);
-			}
+			};
+			dv.style.width = (maxLength/2 + 2) + "em";
 			_height = 1.7;
 			_margin = 0.34;
 		}
@@ -2267,7 +2275,7 @@ $M.func.add('abs', {
 	oneResult: function (el, ns) {
 		var val = el[0];
 		if (!val.isNum)
-			$M.func.get('abs', [val]);
+			return $M.func.get('abs', [val]);
 		if ($M.activeArticle.getMode('rational'))
 			return new $M.Rational(Math.abs(val.nom), Math.abs(val.denom))
 		return Math.abs(val);
@@ -2850,10 +2858,10 @@ $M.func.add('_user_fnc', {
 
  /// PLOT
  ///////////////////
- $M.PLOT_COLORS = {black:"rgb(0, 0, 0)", grey:"rgb(90, 90, 90)",
-		red:"rgb(255, 0, 0)", green:"rgb(0, 255, 0)",
-		blue:"rgb(0, 0, 255)", yellow:"rgb(255, 255, 0)",
-		pink:"rgb(255, 0, 255)", brown:"rgb(80, 40, 0)"};
+ $M.PLOT_COLORS = {black:"rgb(10, 10, 10)", grey:"rgb(90, 90, 90)",
+		red:"rgb(220, 32, 32)", green:"rgb(32, 220, 32)",
+		blue:"rgb(32, 32, 220)", yellow:"rgb(220, 220, 32)",
+		pink:"rgb(220, 32, 220)", brown:"rgb(80, 40, 0)"};
 
 $M.func.add('plot', {
 	isPlot: true,
@@ -2864,22 +2872,31 @@ $M.func.add('plot', {
 		var newOpt = {};
 		newOpt.legend = opt.legend;
 		var width = opt.width;
-		width = parseInt(width || 200);
-		newOpt.width = width < 200 ? 200 : width > 500 ? 500 : width;
+		width = parseInt(width || 100);
+		newOpt.width = width < 100 ? 100 : width > 700 ? 700 : width;
 		var height = opt.height;
-		height = parseInt(height || 200);
-		newOpt.height = height < 200 ? 200 : height > 500 ? 500 : height;
+		height = parseInt(height || 100);
+		newOpt.height = height < 100 ? 100 : height > 700 ? 700 : height;
 		newOpt.xaxis = "auto";
 		newOpt.yaxis = "auto";
 		newOpt.data = [];
-		for (var i = 1; i <= 3; i++) {
+
+		if (opt["x"] && opt["y"]) {
+			newOpt.data.push({x: opt["x"],
+							y: opt["y"],
+							color: opt["color"],
+							type: opt["type"],
+							label: opt["label"]});
+		};
+
+		for (var i = 0; i <= 10; i++) {
 			if (opt["x" + i] && opt["y" + i]) {
 				newOpt.data.push({x:opt["x" + i],
 								y:opt["y" + i],
 								color: opt["color" + i],
 								type: opt["type" + i],
 								label: opt["label" + i]});
-			}
+			};
 		};
 		this.options = newOpt;
 	},
@@ -2896,8 +2913,12 @@ $M.func.add('plot', {
 				var xrange = $M.func.get('range',[-10,-9.9,10]);
 				ns.add(x, xrange);
 				x = xrange.getResult(ns);
-			}
+			};
 			var y = data[i].y.getResult(ns);
+			if (!xIsSymb && y.isFunc) {
+				y.args[0] = x;
+				y = y.getResult(ns);
+			};
 			var elData = [];
 			if (xIsSymb)
 				ns.delNS();
@@ -2949,8 +2970,8 @@ $M.func.add('plot3d', {
 		var newOpt = {};
 		newOpt.legend = opt.legend;
 		var width = opt.width;
-		width = parseInt(width || 200);
-		newOpt.width = width < 200 ? 200 : width > 500 ? 500 : width;
+		width = parseInt(width || 100);
+		newOpt.width = width < 100 ? 100 : width > 700 ? 700 : width;
 		newOpt.xaxis = "auto";
 		newOpt.yaxis = "auto";
 		newOpt.zaxis = "auto";
